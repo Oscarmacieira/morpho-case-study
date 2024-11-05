@@ -17,5 +17,5 @@ export const rainbowkitConfig = getDefaultConfig({
       wallets: [metaMaskWallet, rabbyWallet, okxWallet],
     },
   ],
-  ssr: false,
+  ssr: true,
 });
