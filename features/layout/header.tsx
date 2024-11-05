@@ -1,6 +1,5 @@
 "use client";
 
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { LogoSvg } from "../../components/svgs/LogoSvg";
 import { AccountButton } from "../auth/AccountButton";
 

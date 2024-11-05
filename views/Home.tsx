@@ -7,13 +7,16 @@ import {
 } from "@/features/auth/AuthWrapper";
 import { ConnectionCard } from "@/features/auth/ConnectionCard";
 import { WrongNetworkCard } from "@/features/auth/WrongNetworkCard";
-import { Header } from "@/features/layout/header";
+import { Header } from "@/features/layout/Header";
+import { VaultAddressInput } from "@/features/vault/VaultAddressInput";
 
 const Connected: FC = () => (
   <div>
     <Header />
     <main>
-      <div></div>
+      <div>
+        <VaultAddressInput />
+      </div>
     </main>
   </div>
 );
@@ -35,6 +38,10 @@ const AuthenticationContent: FC<AuthenticationContentProps> = ({
     account &&
     chain &&
     (!authenticationStatus || authenticationStatus === "authenticated");
+
+  if (!isReady) {
+    return null;
+  }
 
   if (!account) {
     return (
