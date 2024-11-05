@@ -1,4 +1,4 @@
-export const TickSvg = () => {
+export const TickSvg = ({ className }: { className?: string }) => {
   return (
     <svg
       width="21"
@@ -6,6 +6,7 @@ export const TickSvg = () => {
       viewBox="0 0 21 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className={className}
     >
       <path
         fillRule="evenodd"
