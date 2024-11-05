@@ -3,6 +3,15 @@ import { useVaultDataQuery } from "./useVaultDataQuery";
 import { FC } from "react";
 import { Address } from "viem";
 import { Button } from "@/components/ui/button";
+import { useWithdrawMaxMutation } from "./useWithdrawMaxMutation";
+import { waitForTransactionReceipt } from "wagmi/actions";
+import { rainbowkitConfig } from "@/lib/rainbowkit.config";
+import { PendingTxCard } from "../transaction/PendingTxCard";
+import { SuccessTxCard } from "../transaction/SuccessTxCard";
+import { ErrorTxCard } from "../transaction/ErrorTxCard";
+import { useTransactionState } from "../transaction/useTxState";
+import { useTransaction } from "../transaction/TxProvider";
+import { useVault } from "./VaultProvider";
 
 type VaultCardContentProps = {
   amount?: string;
@@ -20,26 +29,48 @@ const VaultCardContent: FC<VaultCardContentProps> = ({
       <p className="font-inter font-medium text-[11px] leading-[16px] text-[hsla(206,11%,29%,0.5)]">
         {title}
       </p>
-      <p>{`${amount ?? "0"} $${symbol}`}</p>
+      <p>{`${Number(amount ?? "0").toFixed(2)} $${symbol}`}</p>
     </div>
   );
 };
 
-type VaultCardProps = {
-  vaultAddress: Address;
-};
-
-export const VaultCard: FC<VaultCardProps> = ({ vaultAddress }) => {
+export const VaultCard: FC = () => {
   const {
+    vaultAddress,
     isLoading,
     name,
     symbol,
     assetSymbol,
     formattedUserAssets,
     formattedUserShares,
-  } = useVaultDataQuery(vaultAddress);
+    userMaxRedeem,
+  } = useVault();
 
-  if (isLoading) {
+  const { withdraw } = useWithdrawMaxMutation(vaultAddress);
+  const { setPending, setSuccess, setError } = useTransaction();
+
+  const handleWithdraw = async () => {
+    try {
+      const tx = await withdraw(userMaxRedeem);
+      if (!tx) return;
+
+      setPending(tx);
+
+      const receipt = await waitForTransactionReceipt(rainbowkitConfig, {
+        hash: tx,
+      });
+
+      if (receipt.status === "success") {
+        setSuccess();
+      } else {
+        setError(new Error("Transaction failed"));
+      }
+    } catch (error) {
+      setError(error instanceof Error ? error : new Error("Unknown error"));
+    }
+  };
+
+  if (isLoading || !vaultAddress) {
     return null;
   }
 
@@ -59,7 +90,13 @@ export const VaultCard: FC<VaultCardProps> = ({ vaultAddress }) => {
           symbol={assetSymbol}
           title="User Assets"
         />
-        <Button variant="gradient">Withdraw User Max</Button>
+        <Button
+          variant="gradient"
+          disabled={userMaxRedeem === BigInt(0)}
+          onClick={() => handleWithdraw()}
+        >
+          Withdraw User Max
+        </Button>
       </CardContent>
     </Card>
   );
