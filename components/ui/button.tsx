@@ -22,7 +22,7 @@ const buttonVariants = cva(
           "bg-gradient-to-bl from-gradient-1/80 via-gradient-2/80 via-gradient-3/80 to-gradient-4/80 hover:from-gradient-1/90 hover:via-gradient-2/90 hover:via-gradient-3/90 hover:to-gradient-4/90 active:from-gradient-1 active:via-gradient-2 active:via-gradient-3 active:to-gradient-4 disabled:from-gradient-1/30 disabled:via-gradient-2/30 disabled:via-gradient-3/30 disabled:to-gradient-4/30 text-white",
       },
       size: {
-        default: "h-10 px-4 py-2",
+        default: "h-[32px] rounded-[4px] px-[10px] py-[6px] gap-[10px]",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",

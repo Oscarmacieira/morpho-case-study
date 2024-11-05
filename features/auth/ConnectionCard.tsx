@@ -23,7 +23,7 @@ export const ConnectionCard = ({
         </p>
         <Button
           variant="gradient"
-          className="w-full"
+          className="w-full h-[32px] rounded-[4px] px-[10px] py-[6px] gap-[10px]"
           disabled={isLoading}
           onClick={onConnect}
         >
