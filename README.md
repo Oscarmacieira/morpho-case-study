@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Morpho Case Study
+
+A Next.js application for interacting with Morpho Protocol vaults, allowing users to view and withdraw their assets.
+
+## Tech Stack
+
+### Core Technologies
+
+- **Next.js 14** - React framework with App Router
+- **TypeScript** - Static type checking
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - Reusable component system
+
+### Web3 Technologies
+
+- **wagmi** - React Hooks for Ethereum
+- **viem** - TypeScript Interface for Ethereum
+- **RainbowKit** - Wallet connection library
+- **Tenderly** - Virtual mainnet for testing
+
+### State Management & Data Fetching
+
+- **TanStack Query** - (React Query) for server state management
+- **React Hook Form** - Form state management
+- **Zod** - Schema validation
+
+## Project Structure
+
+```text
+.
+├── app/ # Next.js app directory
+├── components/ # Reusable UI components
+│ ├── svgs/ # SVG components
+│ └── ui/ # shadcn/ui components
+├── features/ # Feature-based modules
+│ ├── auth/ # Authentication related components
+│ ├── layout/ # Layout components
+│ ├── transaction/ # Transaction handling
+│ └── vault/ # Vault interaction logic
+├── lib/ # Utility functions and configurations
+│ └── formatters/ # Formatting utilities
+├── views/ # Page-level components
+└── abis/ # Smart contract ABIs
+```
+
+## Key Features
+
+- Web3 wallet integration with RainbowKit
+- MetaMorpho vault interaction
+- Real-time transaction tracking
+- Responsive UI with dark/light mode support
+- Type-safe contract interactions
+- Error handling and loading states
+
+## Architecture Decisions
+
+### 1. Feature-First Architecture
+
+The project uses a feature-first architecture, organizing code by domain rather than technical function. This improves maintainability and makes the codebase more intuitive to navigate.
+
+### 2. Provider Pattern
+
+Implements React Context providers for:
+
+- Transaction state management
+- Vault data management
+- Web3 connectivity
+
+### 3. Custom Hooks
+
+Extensive use of custom hooks for:
+
+- Contract interactions
+- Transaction state management
+- Data fetching and caching
+
+### 4. Type Safety
+
+Strong emphasis on type safety using:
+
+- TypeScript for all components
+- Zod for runtime validation
+- Type-safe contract ABIs
+
+## Environment Variables
+
+Required environment variables:
+
+```sh
+NEXT_PUBLIC_TENDERLY_VIRTUAL_MAINNET_RPC=
+NEXT_PUBLIC_RAINBOWKIT_PROJECT_ID=
+NEXT_PUBLIC_MM_FACTORY_ADDRESS=
+```
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Install dependencies:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```sh
+yarn install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Create a `.env.local` file with the required environment variables
+4. Run the development server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+yarn dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Development Workflow
 
-## Learn More
+The project uses several key workflows:
 
-To learn more about Next.js, take a look at the following resources:
+### State Management
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Transaction states are managed through a dedicated provider
+- Vault data is cached and managed using TanStack Query
+- Form state handled by React Hook Form
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Styling
 
-## Deploy on Vercel
+- Tailwind CSS for utility-first styling
+- CSS Variables for theme customization
+- shadcn/ui for consistent component design
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Web3 Integration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- RainbowKit for wallet connection
+- wagmi hooks for contract interactions
+- Tenderly for testing on virtual mainnet
+
+## License
+
+MIT
