@@ -7,19 +7,53 @@ import {
 } from "@/features/auth/AuthWrapper";
 import { ConnectionCard } from "@/features/auth/ConnectionCard";
 import { WrongNetworkCard } from "@/features/auth/WrongNetworkCard";
-import { Header } from "@/features/layout/Header";
 import { VaultAddressInput } from "@/features/vault/VaultAddressInput";
+import { Navbar } from "@/features/layout/Navbar";
+import { PendingTxCard } from "@/features/transaction/PendingTxCard";
+import { SuccessTxCard } from "@/features/transaction/SuccessTxCard";
+import { useVault } from "@/features/vault/VaultProvider";
+import { useTransaction } from "@/features/transaction/TxProvider";
+import { ErrorTxCard } from "@/features/transaction/ErrorTxCard";
+import { VaultCard } from "@/features/vault/VaultCard";
 
-const Connected: FC = () => (
-  <div>
-    <Header />
-    <main>
+const Connected: FC = () => {
+  const { state, reset } = useTransaction();
+  const { assetSymbol, formattedUserAssets } = useVault();
+
+  if (state.status !== "idle") {
+    return (
       <div>
-        <VaultAddressInput />
+        <Navbar />
+        <main>
+          {state.status === "pending" && state.txHash && (
+            <PendingTxCard txHash={state.txHash} />
+          )}
+          {state.status === "success" && (
+            <SuccessTxCard
+              amount={formattedUserAssets || "0"}
+              symbol={assetSymbol || ""}
+              onClose={reset}
+            />
+          )}
+          {state.status === "error" && <ErrorTxCard onClose={reset} />}
+        </main>
       </div>
-    </main>
-  </div>
-);
+    );
+  }
+
+  return (
+    <div>
+      <Navbar />
+      <main>
+        <div className="flex flex-col">
+          <VaultAddressInput />
+          <br />
+          <VaultCard />
+        </div>
+      </main>
+    </div>
+  );
+};
 
 interface AuthenticationContentProps extends AuthWrapperProps {}
 
