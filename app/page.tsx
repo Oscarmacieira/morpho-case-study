@@ -1,7 +1,5 @@
-export default function Home() {
-  return (
-    <div>
-      <main>Hello World</main>
-    </div>
-  );
+import Home from "@/views/Home";
+
+export default function RoutePage() {
+  return <Home />;
 }
