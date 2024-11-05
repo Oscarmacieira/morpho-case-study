@@ -20,9 +20,7 @@ const VaultCardContent: FC<VaultCardContentProps> = ({
       <p className="font-inter font-medium text-[11px] leading-[16px] text-[hsla(206,11%,29%,0.5)]">
         {title}
       </p>
-      <p>
-        {amount} ${symbol}
-      </p>
+      <p>{`${amount ?? "0"} $${symbol}`}</p>
     </div>
   );
 };
