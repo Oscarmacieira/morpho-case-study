@@ -4,14 +4,13 @@ import React, { FC, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Address, isAddress } from "viem";
 import { useDebounce } from "use-debounce";
-
 import { AlertSvg } from "@/components/svgs/AlertSvg";
 import { TickSvg } from "@/components/svgs/TickSvg";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useIsMetaMorphoQuery } from "./useIsMetaMorphoQuery";
-import { useVaultDataQuery } from "./useVaultDataQuery";
 import { VaultCard } from "./VaultCard";
+import { useVault } from "./VaultProvider";
 
 type FormData = {
   address: string;
@@ -35,10 +34,12 @@ export const VaultAddressInput: FC = () => {
   const { data: isMetaMorpho, isError: rpcError } =
     useIsMetaMorphoQuery(debouncedAddress);
 
+  const { setVaultAddress } = useVault();
   useMemo(() => {
     if (!debouncedAddress) {
       clearErrors("address");
       setIsValidating(false);
+      setVaultAddress(undefined);
       return;
     }
 
@@ -48,6 +49,7 @@ export const VaultAddressInput: FC = () => {
         message: "Please enter a valid address",
       });
       setIsValidating(false);
+      setVaultAddress(undefined);
       return;
     }
 
@@ -59,11 +61,13 @@ export const VaultAddressInput: FC = () => {
         message: "Not a valid MetaMorpho vault",
       });
       setIsValidating(false);
+      setVaultAddress(undefined);
     } else if (isMetaMorpho === true) {
       clearErrors("address");
       setIsValidating(false);
+      setVaultAddress(debouncedAddress);
     }
-  }, [debouncedAddress, isMetaMorpho, setError, clearErrors]);
+  }, [debouncedAddress, isMetaMorpho, setError, clearErrors, setVaultAddress]);
 
   const onSubmit = handleSubmit(async (data) => {
     if (!isAddress(data.address)) {
@@ -93,15 +97,9 @@ export const VaultAddressInput: FC = () => {
     clearErrors("address");
   });
 
-  const {
-    isLoading: isVaultDataLoading,
-    name,
-    symbol,
-  } = useVaultDataQuery(address);
-
   return (
     <div className="flex flex-col gap-2">
-      <Card className="w-[350px] mx-auto mt-[150px]">
+      <Card className="w-[350px] mx-auto mt-[100px]">
         <CardContent className="py-[50px] px-[20px]">
           <form onSubmit={onSubmit} className="flex flex-col gap-2">
             <label
@@ -137,7 +135,6 @@ export const VaultAddressInput: FC = () => {
           </form>
         </CardContent>
       </Card>
-      {isMetaMorpho && <VaultCard vaultAddress={address} />}
     </div>
   );
 };
