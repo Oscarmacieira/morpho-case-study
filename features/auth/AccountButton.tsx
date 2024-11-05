@@ -16,7 +16,7 @@ export const AccountButton = () => {
   const { openAccountModal } = useAccountModal();
   return (
     <Button
-      className="bg-[#191D200F] rounded-[3px] text-primary hover:bg-[#191D201A]"
+      className="bg-[#191D200F] rounded-[3px] text-primary hover:bg-[#191D201A] pt-[3px] pr-[8px] pb-[3px] pl-[2px] text-[11px] h-auto gap-[2px]"
       onClick={openAccountModal}
     >
       <AccountIcon />

@@ -9,7 +9,7 @@ export const Navbar = () => {
       <div className="flex items-center justify-between w-full px-3 max-w-[1440px] mx-auto md:px-10">
         <div className="flex items-center gap-2">
           <LogoSvg />
-          <h1 className="text-xl font-normal leading-6 text-body opacity-95">
+          <h1 className="text-[13px] font-normal leading-6 text-body opacity-95">
             Morpho Test
           </h1>
         </div>

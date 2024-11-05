@@ -1,17 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { useVaultDataQuery } from "./useVaultDataQuery";
 import { FC } from "react";
-import { Address } from "viem";
 import { Button } from "@/components/ui/button";
 import { useWithdrawMaxMutation } from "./useWithdrawMaxMutation";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { rainbowkitConfig } from "@/lib/rainbowkit.config";
-import { PendingTxCard } from "../transaction/PendingTxCard";
-import { SuccessTxCard } from "../transaction/SuccessTxCard";
-import { ErrorTxCard } from "../transaction/ErrorTxCard";
-import { useTransactionState } from "../transaction/useTxState";
 import { useTransaction } from "../transaction/TxProvider";
 import { useVault } from "./VaultProvider";
+import { Loader2 } from "lucide-react";
 
 type VaultCardContentProps = {
   amount?: string;
@@ -70,8 +65,16 @@ export const VaultCard: FC = () => {
     }
   };
 
-  if (isLoading || !vaultAddress) {
+  if (!vaultAddress) {
     return null;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="w-[350px] mx-auto">
+        <Loader2 className="h-10 w-10 animate-spin mx-auto mt-[100px]" />
+      </div>
+    );
   }
 
   return (

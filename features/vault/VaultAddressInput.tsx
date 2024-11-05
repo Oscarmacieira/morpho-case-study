@@ -9,8 +9,8 @@ import { TickSvg } from "@/components/svgs/TickSvg";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useIsMetaMorphoQuery } from "./useIsMetaMorphoQuery";
-import { VaultCard } from "./VaultCard";
 import { useVault } from "./VaultProvider";
+import { Loader2 } from "lucide-react";
 
 type FormData = {
   address: string;
@@ -35,6 +35,7 @@ export const VaultAddressInput: FC = () => {
     useIsMetaMorphoQuery(debouncedAddress);
 
   const { setVaultAddress } = useVault();
+
   useMemo(() => {
     if (!debouncedAddress) {
       clearErrors("address");
@@ -97,6 +98,14 @@ export const VaultAddressInput: FC = () => {
     clearErrors("address");
   });
 
+  const getEndContent = () => {
+    if (!address) return null;
+    if (isValidating) return <Loader2 className="h-4 w-4 animate-spin" />;
+    if (errors.address) return <AlertSvg />;
+    if (isMetaMorpho === true) return <TickSvg />;
+    return null;
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <Card className="w-[350px] mx-auto mt-[100px]">
@@ -115,15 +124,7 @@ export const VaultAddressInput: FC = () => {
                 type="text"
                 placeholder="Enter MetaMorpho vault address"
                 className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                endContent={
-                  address ? (
-                    isValidating ? null : isMetaMorpho === true ? (
-                      <TickSvg />
-                    ) : (
-                      <AlertSvg />
-                    )
-                  ) : null
-                }
+                endContent={getEndContent()}
               />
               {address && errors.address && (
                 <p className="absolute text-sm text-destructive right-0 mt-1">
